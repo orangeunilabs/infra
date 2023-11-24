@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  status:
+    image: louislam/uptime-kuma:1-alpine
+    restart: unless-stopped
+    ports:
+      - 3001:3001
+    volumes:
+      - ./data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+networks:
+  proxynet:
+    external: true
