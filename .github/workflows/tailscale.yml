@@ -36,6 +36,16 @@ jobs:
           action: apply
           policy-file: tailscale/acl.hujson
 
+      - name: Deploy ACL (Manual)
+        if: github.event_name == 'workflow_dispatch'
+        id: manual-deploy-acl
+        uses: tailscale/gitops-acl-action@v1
+        with:
+          api-key: ${{ secrets.TS_API_KEY }}
+          tailnet: ${{ secrets.TS_TAILNET }}
+          action: apply
+          policy-file: tailscale/acl.hujson
+
       - name: Test ACL
         if: github.event_name == 'pull_request'
         id: test-acl
