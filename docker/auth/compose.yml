@@ -89,3 +89,7 @@ volumes:
     driver: local
   redis:
     driver: local
+
+networks:
+  proxynet:
+    external: true
