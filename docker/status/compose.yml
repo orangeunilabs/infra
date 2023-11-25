@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  status:
+  uptimekuma:
     image: louislam/uptime-kuma:1-alpine
     restart: unless-stopped
     ports:
