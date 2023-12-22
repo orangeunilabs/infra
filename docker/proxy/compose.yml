@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   caddy:
-    build: ./Dockerfile
+    image: ghcr.io/orangeunilabs/caddy:latest
     container_name: caddy
     hostname: caddy
     restart: unless-stopped

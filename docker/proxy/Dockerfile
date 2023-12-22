@@ -1,6 +1,7 @@
 ARG VERSION=2.7
 
 FROM caddy:${VERSION}-builder-alpine AS builder
+LABEL org.opencontainers.image.source="https://github.com/orangeunilabs/infra"
 
 RUN xcaddy build \
     --with github.com/caddy-dns/cloudflare
