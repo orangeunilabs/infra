@@ -3,6 +3,8 @@ version: "3.9"
 services:
   uptimekuma:
     image: louislam/uptime-kuma:1-alpine
+    container_name: uptimekuma
+    hostname: uptime
     restart: unless-stopped
     ports:
       - 3001:3001
