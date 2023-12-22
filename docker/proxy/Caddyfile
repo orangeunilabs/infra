@@ -10,6 +10,9 @@ servers {
 # Authentik
 auth.{env.ROOT_DOMAIN} {
 	reverse_proxy auth:9000
+	tls {
+		dns cloudflare {env.CF_API_TOKEN}
+	}
 }
 
 # Uptime Kuma
