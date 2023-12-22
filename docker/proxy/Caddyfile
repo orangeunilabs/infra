@@ -1,0 +1,23 @@
+tls {
+	dns cloudflare {env.CF_API_TOKEN}
+	resolvers 1.1.1.1
+}
+
+servers {
+	metrics
+}
+
+# Uptime Kuma
+{env.STATUS_PAGE_DOMAIN} {
+	reverse_proxy uptime:3001
+}
+
+# Authentik
+{env.AUTH_DOMAIN} {
+	reverse_proxy auth:9000
+}
+
+# Git (Forgejo/Gitea - not sure which as of yet)
+{env.GIT_DOMAIN} {
+	reverse_proxy git:3000
+}

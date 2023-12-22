@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  caddy:
+    build: ./Dockerfile
+    container_name: caddy
+    hostname: caddy
+    restart: unless-stopped
+    networks:
+      - proxynet
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./data:/data
+      - ./config:/config
+
+    env_file:
+      - .env
+
+networks:
+  proxynet:
+    attachable: true
+    driver: bridge
