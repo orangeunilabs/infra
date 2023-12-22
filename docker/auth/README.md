@@ -8,6 +8,9 @@ required environment variables to get started can be found in the `.env.example`
 
 ```sh
 # An easy way to start quick
+cp .env.example .env
 echo "PG_PASS=$(openssl rand -base64 36)" >> .env
 echo "AUTHENTIK_SECRET_KEY=$(openssl rand -base64 36)" >> .env
+nano .env
+# Fill in rest of environment variables...
 ```

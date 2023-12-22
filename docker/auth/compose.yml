@@ -36,6 +36,7 @@ services:
   server:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2023.10.4}
     container_name: authentik_server
+    hostname: authentik
     restart: unless-stopped
     command: server
     environment:
