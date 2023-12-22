@@ -8,7 +8,7 @@ servers {
 }
 
 # Authentik
-{env.AUTH_DOMAIN} {
+auth.{env.ROOT_DOMAIN} {
 	reverse_proxy auth:9000
 }
 
