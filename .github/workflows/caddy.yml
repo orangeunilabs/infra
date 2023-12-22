@@ -1,3 +1,5 @@
+name: Caddy Format
+
 on:
   push:
     branches: ["main"]
