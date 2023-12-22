@@ -7,14 +7,14 @@ servers {
 	metrics
 }
 
-# Uptime Kuma
-{env.STATUS_PAGE_DOMAIN} {
-	reverse_proxy uptime:3001
-}
-
 # Authentik
 {env.AUTH_DOMAIN} {
 	reverse_proxy auth:9000
+}
+
+# Uptime Kuma
+{env.STATUS_PAGE_DOMAIN} {
+	reverse_proxy uptime:3001
 }
 
 # Git (Forgejo/Gitea - not sure which as of yet)
