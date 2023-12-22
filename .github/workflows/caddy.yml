@@ -19,7 +19,7 @@ jobs:
         uses: docker/setup-qemu-action@v3
 
       - name: Format Caddyfile
-        run: docker run --rm -v $(pwd)/docker/proxy/Caddyfile:/Caddyfile caddy:2.4.3-alpine fmt /Caddyfile
+        run: docker run --rm -v $(pwd)/docker/proxy/Caddyfile:/Caddyfile caddy:2 caddy fmt /Caddyfile
 
       - name: Commit changes
         run: |
