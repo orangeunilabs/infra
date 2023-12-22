@@ -1,0 +1,25 @@
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "docker/proxy/**"
+  workflow_dispatch:
+
+jobs:
+  format:
+    name: Format Caddyfile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Format Caddyfile
+        run: docker run --rm -v $(pwd)/docker/proxy/Caddyfile:/Caddyfile caddy:2.4.3-alpine fmt /Caddyfile
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email ""
+          git add docker/proxy/Caddyfile
+          git commit -m "Auto Format Caddyfile"
+          git push
