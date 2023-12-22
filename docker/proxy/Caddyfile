@@ -16,11 +16,11 @@ auth.{env.ROOT_DOMAIN} {
 }
 
 # Uptime Kuma
-{env.STATUS_PAGE_DOMAIN} {
-	reverse_proxy uptime:3001
-}
+# {env.STATUS_PAGE_DOMAIN} {
+# 	reverse_proxy uptime:3001
+# }
 
 # Git (Forgejo/Gitea - not sure which as of yet)
-{env.GIT_DOMAIN} {
-	reverse_proxy git:3000
-}
+# {env.GIT_DOMAIN} {
+# 	reverse_proxy git:3000
+# }
