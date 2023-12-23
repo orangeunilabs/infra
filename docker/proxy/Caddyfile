@@ -1,5 +1,5 @@
 {
-	# email {env.ACME_EMAIL}
+	email {env.ACME_EMAIL}
 	# acme_dns cloudflare {env.CF_API_TOKEN}
 	# Use LetsEncrypt server
 	acme_ca https://acme-v02.api.letsencrypt.org/directory
@@ -10,7 +10,7 @@ servers {
 }
 
 # Authentik
-auth.{env.ROOT_DOMAIN} {
+auth.{$ROOT_DOMAIN} {
 	reverse_proxy auth:5080
 	tls {
 		dns cloudflare {env.CF_API_TOKEN}
