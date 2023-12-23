@@ -1,38 +1,8 @@
-{
-	email {env.ACME_EMAIL}
-	# acme_dns cloudflare {env.CF_API_TOKEN}
-	# Use LetsEncrypt server
-	acme_ca https://acme-v02.api.letsencrypt.org/directory
-}
-
-servers {
-	metrics
-	}
-}
-
-# Redirect HTTP to HTTP(S)
-# handle :80 {
-# 	redir https://{host}{uri}
-# }
-
-handle :80 :443 {
-	respond "Just A Fly In The Ointment, Hans. The Monkey In The Wrench. The Pain In The Ass. - John McClane, Die Hard"
-}
-
 # Authentik
 auth.orangeunilabs.com {
-	reverse_proxy auth:5080
 	tls {
 		dns cloudflare {env.CF_API_TOKEN}
+		resolvers 1.1.1.1
 	}
+	reverse_proxy auth:5080
 }
-
-# Uptime Kuma
-# {env.STATUS_PAGE_DOMAIN} {
-# 	reverse_proxy uptime:3001
-# }
-
-# Git (Forgejo/Gitea - not sure which as of yet)
-# {env.GIT_DOMAIN} {
-# 	reverse_proxy git:3000
-# }
