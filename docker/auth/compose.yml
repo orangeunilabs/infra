@@ -85,12 +85,6 @@ services:
       - postgresql
       - redis
 
-volumes:
-  database:
-    driver: local
-  redis:
-    driver: local
-
 networks:
   proxy_proxynet:
     external: true
