@@ -1,7 +1,7 @@
-# {
-# 	email {env.ACME_EMAIL}
-# 	acme_dns cloudflare {env.CF_API_TOKEN}
-# }
+{
+	# email {env.ACME_EMAIL}
+	# acme_dns cloudflare {env.CF_API_TOKEN}
+}
 
 servers {
 	metrics
@@ -11,7 +11,6 @@ servers {
 auth.{env.ROOT_DOMAIN} {
 	reverse_proxy auth:9000
 	tls {
-		email {env.ACME_EMAIL}
 		dns cloudflare {env.CF_API_TOKEN}
 	}
 }
