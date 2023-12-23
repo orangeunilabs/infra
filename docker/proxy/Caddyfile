@@ -1,6 +1,8 @@
 {
 	# email {env.ACME_EMAIL}
 	# acme_dns cloudflare {env.CF_API_TOKEN}
+	# Use LetsEncrypt server
+	acme_ca https://acme-v02.api.letsencrypt.org/directory
 }
 
 servers {
