@@ -92,5 +92,5 @@ volumes:
     driver: local
 
 networks:
-  proxynet:
+  proxy_proxynet:
     external: true
