@@ -7,10 +7,20 @@
 
 servers {
 	metrics
+	}
+}
+
+# Redirect HTTP to HTTP(S)
+# handle :80 {
+# 	redir https://{host}{uri}
+# }
+
+handle :80 :443 {
+	respond "Just A Fly In The Ointment, Hans. The Monkey In The Wrench. The Pain In The Ass. - John McClane, Die Hard"
 }
 
 # Authentik
-auth.{$ROOT_DOMAIN} {
+auth.orangeunilabs.com {
 	reverse_proxy auth:5080
 	tls {
 		dns cloudflare {env.CF_API_TOKEN}
