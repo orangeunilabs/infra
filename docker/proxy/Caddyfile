@@ -12,11 +12,11 @@ auth.orangeunilabs.com {
 		dns cloudflare {env.CF_API_TOKEN}
 		resolvers 1.1.1.1
 	}
-	reverse_proxy auth:9000 {
+	reverse_proxy http://auth:9000 {
 		# Authentik reverse proxy config - required forwarded headers
 		# https://goauthentik.io/docs/installation/reverse-proxy
 		header_up X-Forwarded-Proto {scheme}
-
+		header_up X-Real-IP {remote_host}
 		header_up X-Forwarded-For {remote}
 		header_up Host {host}
 		header_up Connection {>Connection [upgrade]}
