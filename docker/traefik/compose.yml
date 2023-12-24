@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  traefik:
+    image: traefik:v2.10
+    container_name: traefik
+    hostname: traefik
+    restart: unless-stopped
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker"
+    networks:
+      - proxynet
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./certs:/certs
+      - ./traefik-static.yml:/etc/traefik/traefik.yml:ro
+
+    env_file:
+      - .env
+
+networks:
+  proxynet:
+    name: proxynet
+    attachable: true
+    driver: bridge

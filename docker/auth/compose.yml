@@ -3,12 +3,21 @@ version: "3"
 
 services:
   server:
-    image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2023.10.4}
+    image: ghcr.io/goauthentik/server:${AUTHENTIK_TAG:-2023.10.4}
     container_name: authentik_server
     hostname: auth
     networks:
       - default
       - proxynet
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.auth.rule=Host(`auth.orangeunilabs.com`)
+      # Use the static-defined Cloudflare ACME provider
+      - traefik.http.routers.auth.tls=true
+      - traefik.http.routers.auth.tls.certresolver=cloudflare
+      # Declare the port that Authentik is listening on
+      - traefik.http.services.auth.loadbalancer.server.port=9000
+
     restart: unless-stopped
     command: server
     environment:
