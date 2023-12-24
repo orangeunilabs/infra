@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3"
 
 services:
   caddy:
@@ -22,5 +22,6 @@ services:
 
 networks:
   proxynet:
+    name: proxynet
     attachable: true
     driver: bridge
