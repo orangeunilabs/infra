@@ -3,7 +3,7 @@ version: "3"
 
 services:
   server:
-    image: ghcr.io/goauthentik/server:${AUTHENTIK_TAG:-2023.10.4}
+    image: ghcr.io/goauthentik/server:2023.10.5
     container_name: authentik_server
     hostname: auth
     networks:
@@ -16,8 +16,6 @@ services:
       # Use the static-defined Cloudflare ACME provider
       - traefik.http.routers.auth.tls=true
       - traefik.http.routers.auth.tls.certresolver=cloudflare
-      # Declare the port that Authentik is listening on
-      - traefik.http.services.auth.loadbalancer.server.port=9000
 
     restart: unless-stopped
     command: server
@@ -34,7 +32,6 @@ services:
       - .env
     ports:
       - "${COMPOSE_PORT_HTTP:-9000}:9000"
-      - "${COMPOSE_PORT_HTTPS:-9443}:9443"
     depends_on:
       - postgresql
       - redis
@@ -73,7 +70,7 @@ services:
     volumes:
       - ./data/redis:/data
   worker:
-    image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2023.10.4}
+    image: ghcr.io/goauthentik/server:${AUTHENTIK_TAG:-2023.10.4}
     container_name: authentik_worker
     restart: unless-stopped
     command: worker
