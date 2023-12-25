@@ -1,3 +1,13 @@
+providers:
+  docker:
+    endpoint: unix:///var/run/docker.sock
+
+entryPoints:
+  http:
+    address: ":80"
+  https:
+    address: ":443"
+
 certificatesResolvers:
   cloudflare:
     acme:
@@ -10,3 +20,11 @@ certificatesResolvers:
         resolvers:
           - "8.8.8.8:53"
           # - "1.1.1.1:53"
+
+api:
+  insecure: true
+  dashboard: true
+
+log:
+  level: DEBUG
+  format: json
