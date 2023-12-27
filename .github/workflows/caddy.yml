@@ -4,7 +4,7 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "docker/proxy/**"
+      - "docker/caddy/**"
   workflow_dispatch:
 
 jobs:
@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          ref: $
 
       - name: Setup Docker
         uses: docker/setup-qemu-action@v3
@@ -21,13 +23,11 @@ jobs:
       - name: Format Caddyfile
         run: docker run --rm -v $(pwd)/docker/proxy/Caddyfile:/Caddyfile caddy:2 caddy fmt /Caddyfile
 
-      - name: Commit changes
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email ""
-          git add docker/proxy/Caddyfile
-          git commit -m "Auto Format Caddyfile"
-          git push
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Actions: Auto format Caddyfile"
+          commit_user_name: Github Actions
+
   build-image:
     name: Build Caddy (custom image w/ Cloudflare)
     runs-on: ubuntu-22.04
