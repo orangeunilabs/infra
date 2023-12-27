@@ -17,7 +17,6 @@ services:
       - traefik.http.routers.auth.tls=true
       - traefik.http.routers.auth.tls.certresolver=cloudflare
       # Config the service for Authentik
-      - "traefik.port=9000"
       - "traefik.http.services.server-auth.loadbalancer.server.scheme=http"
       - "traefik.http.services.server-auth.loadbalancer.server.name=auth"
       - "traefik.http.services.server-auth.loadbalancer.server.port=9000"
