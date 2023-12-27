@@ -4,18 +4,16 @@ version: "3"
 services:
   server:
     image: ghcr.io/goauthentik/server:2023.10.5
-    container_name: authentik_server
-    hostname: auth
     networks:
       - proxynet
       - default
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.auth.rule=Host(`auth.orangeunilabs.com`)
-      - traefik.http.routers.auth.entrypoints=http,https
+      - "traefik.enable=true"
+      - "traefik.http.routers.auth.rule=Host(`auth.orangeunilabs.com`)"
+      - "traefik.http.routers.auth.entrypoints=http,https"
       # Use the static-defined Cloudflare ACME provider
-      - traefik.http.routers.auth.tls=true
-      - traefik.http.routers.auth.tls.certresolver=cloudflare
+      - "traefik.http.routers.auth.tls=true"
+      - "traefik.http.routers.auth.tls.certresolver=cloudflare"
       # Config the service for Authentik
       - "traefik.http.services.server-auth.loadbalancer.server.scheme=http"
       - "traefik.http.services.server-auth.loadbalancer.server.name=auth"
@@ -49,6 +47,8 @@ services:
     networks:
       - default
     restart: unless-stopped
+    labels:
+      - "traefik.enable=false"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       start_period: 20s
@@ -68,6 +68,8 @@ services:
     container_name: auth_redis
     command: --save 60 1 --loglevel warning
     restart: unless-stopped
+    labels:
+      - "traefik.enable=false"
     healthcheck:
       test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
       start_period: 20s
@@ -80,6 +82,8 @@ services:
     image: ghcr.io/goauthentik/server:${AUTHENTIK_TAG:-2023.10.4}
     container_name: authentik_worker
     restart: unless-stopped
+    labels:
+      - "traefik.enable=false"
     command: worker
     environment:
       AUTHENTIK_REDIS__HOST: redis
