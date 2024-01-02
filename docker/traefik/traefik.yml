@@ -19,7 +19,6 @@ certificatesResolvers:
         provider: cloudflare
         resolvers:
           - "8.8.8.8:53"
-          # - "1.1.1.1:53"
 
 api:
   insecure: true
