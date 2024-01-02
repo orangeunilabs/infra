@@ -11,6 +11,9 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.auth.rule=Host(`auth.orangeunilabs.com`)"
       - "traefik.http.routers.auth.entrypoints=http,https"
+      - "traefik.http.routers.auth.middlewares=authentik-https-redirect"
+      - "traefik.http.middlewares.authentik-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.auth.service=authentik"
       # Use the static-defined Cloudflare ACME provider
       - "traefik.http.routers.auth.tls=true"
       - "traefik.http.routers.auth.tls.certresolver=cloudflare"
