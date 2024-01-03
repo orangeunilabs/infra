@@ -2,13 +2,38 @@
 version: "3"
 
 services:
-  server:
-    image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2023.10.4}
-    container_name: authentik_server
-    hostname: auth
+  authentik:
+    image: ghcr.io/goauthentik/server:2023.10.5
     networks:
-      - default
       - proxynet
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.auth.entrypoints=http"
+      - "traefik.http.routers.auth.rule=Host(`auth.orangeunilabs.com`)"
+      - "traefik.http.middlewares.authentik-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.auth.middlewares=authentik-https-redirect"
+      - "traefik.http.routers.auth-secure.entrypoints=https"
+      - "traefik.http.routers.auth-secure.rule=Host(`auth.orangeunilabs.com`)"
+      - "traefik.http.routers.auth-secure.service=authentik"
+      - "traefik.http.services.authentik.loadbalancer.server.port=9000"
+      # - "traefik.http.routers.auth.rule=Host(`auth.orangeunilabs.com`)"
+      # - "traefik.http.routers.auth.entrypoints=http,https"
+      # - "traefik.http.routers.auth.middlewares=authentik-https-redirect"
+      # - "traefik.http.middlewares.authentik-https-redirect.redirectscheme.scheme=https"
+      # - "traefik.http.routers.auth.service=authentik"
+      - "traefik.docker.network=proxynet"
+      # Use the static-defined Cloudflare ACME provider
+      - "traefik.http.routers.auth-secure.tls=true"
+      - "traefik.http.routers.auth-secure.tls.certresolver=cloudflare"
+      # Config the service for Authentik
+      # - "traefik.http.services.authentik.loadbalancer.server.scheme=http"
+      # - "traefik.http.services.authentik.loadbalancer.server.name=auth"
+      # - "traefik.http.services.authentik.loadbalancer.server.port=9000"
+      # - "traefik.http.services.authentik.loadbalancer.passhostheader=true"
+      # - "traefik.http.services.server-auth.loadbalancer.healthcheck.port=9000"
+      # - "traefik.http.services.server-auth.loadbalancer.healthcheck.path=/-/health/live/"
+      # - "traefik.http.services.server-auth.loadbalancer.healthcheck.interval=30s"
     restart: unless-stopped
     command: server
     environment:
@@ -23,8 +48,9 @@ services:
     env_file:
       - .env
     ports:
-      - "${COMPOSE_PORT_HTTP:-9000}:9000"
-      - "${COMPOSE_PORT_HTTPS:-9443}:9443"
+      - "9000:9000"
+    expose:
+      - "9000"
     depends_on:
       - postgresql
       - redis
@@ -35,6 +61,8 @@ services:
     networks:
       - default
     restart: unless-stopped
+    labels:
+      - "traefik.enable=false"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       start_period: 20s
@@ -52,9 +80,10 @@ services:
   redis:
     image: docker.io/library/redis:alpine
     container_name: auth_redis
-
     command: --save 60 1 --loglevel warning
     restart: unless-stopped
+    labels:
+      - "traefik.enable=false"
     healthcheck:
       test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
       start_period: 20s
@@ -64,9 +93,11 @@ services:
     volumes:
       - ./data/redis:/data
   worker:
-    image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2023.10.4}
+    image: ghcr.io/goauthentik/server:${AUTHENTIK_TAG:-2023.10.4}
     container_name: authentik_worker
     restart: unless-stopped
+    labels:
+      - "traefik.enable=false"
     command: worker
     environment:
       AUTHENTIK_REDIS__HOST: redis
@@ -95,6 +126,3 @@ services:
 networks:
   proxynet:
     external: true
-
-  authnet:
-    driver: bridge
