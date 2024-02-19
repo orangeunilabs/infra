@@ -23,6 +23,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./certs:/certs
       - ./traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./config.yml:/config.yml:ro
 
     env_file:
       - .env
