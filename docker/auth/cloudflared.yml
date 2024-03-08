@@ -1,3 +1,0 @@
-url: http://localhost:9000
-tunnel: d5f28d3b-1dec-4e39-93be-a357c6736eca
-credentials-file: /home/henrik/.cloudflared/d5f28d3b-1dec-4e39-93be-a357c6736eca.json

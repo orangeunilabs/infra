@@ -3,7 +3,7 @@ version: "3"
 
 services:
   authentik:
-    image: ghcr.io/goauthentik/server:${AUTHENTIK_TAG:-2023.10.7}
+    image: ghcr.io/goauthentik/server:${AUTHENTIK_TAG:-2024.2.2}
     networks:
       - proxynet
       - default
